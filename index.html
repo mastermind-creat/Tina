@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" n />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tina's Success Card</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <style>
+      .floating-icon {
+        animation: float 4s ease-in-out infinite;
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .rise {
+        position: absolute;
+        animation: rise 10s linear infinite;
+        opacity: 0.6;
+      }
+      @keyframes rise {
+        0% {
+          transform: translateY(100vh) scale(0.5);
+          opacity: 0.7;
+        }
+        100% {
+          transform: translateY(-10vh) scale(1);
+          opacity: 0;
+        }
+      }
+
+      /* Typing effect for header/short lines */
+      .typing {
+        overflow: hidden;
+        white-space: nowrap;
+        border-right: 3px solid rgba(219, 39, 119, 0.9);
+        animation: typing 4s steps(40, end), blink 0.75s step-end infinite;
+      }
+      @keyframes typing {
+        from {
+          width: 0;
+        }
+        to {
+          width: 100%;
+        }
+      }
+      @keyframes blink {
+        50% {
+          border-color: transparent;
+        }
+      }
+
+      /* Slide-in text blocks */
+      .slide-left {
+        transform: translateX(-18px);
+        opacity: 0;
+        animation: slideInLeft 0.7s forwards;
+      }
+      .slide-right {
+        transform: translateX(18px);
+        opacity: 0;
+        animation: slideInRight 0.7s forwards;
+      }
+      @keyframes slideInLeft {
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      @keyframes slideInRight {
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      /* subtle shimmer for image frames */
+      .img-frame {
+        position: relative;
+        overflow: hidden;
+      }
+      .img-frame::after {
+        content: "";
+        position: absolute;
+        left: -60%;
+        top: 0;
+        width: 40%;
+        height: 100%;
+        background: linear-gradient(
+          120deg,
+          rgba(255, 255, 255, 0),
+          rgba(255, 255, 255, 0.18),
+          rgba(255, 255, 255, 0)
+        );
+        transform: skewX(-18deg);
+        animation: shimmer 2.2s infinite;
+        pointer-events: none;
+      }
+      @keyframes shimmer {
+        0% {
+          left: -60%;
+        }
+        100% {
+          left: 160%;
+        }
+      }
+
+      /* responsive tweaks */
+      @media (min-width: 768px) {
+        .container-max {
+          max-width: 900px;
+        }
+      }
+      @media (max-width: 767px) {
+        .floating-icon {
+          display: none;
+        }
+      }
+
+      /* small helpers */
+      .badge {
+        background: linear-gradient(90deg, #ffb4d6, #ffd6a5);
+        padding: 0.35rem 0.7rem;
+        border-radius: 999px;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200 min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
+  >
+    <!-- Rising hearts and stars -->
+    <div class="pointer-events-none absolute inset-0">
+      <div class="rise text-pink-400 text-3xl" style="left: 8%">❤️</div>
+      <div
+        class="rise text-purple-400 text-4xl"
+        style="left: 24%; animation-delay: 2s"
+      >
+        💖
+      </div>
+      <div
+        class="rise text-yellow-400 text-2xl"
+        style="left: 40%; animation-delay: 4s"
+      >
+        ⭐
+      </div>
+      <div
+        class="rise text-blue-400 text-3xl"
+        style="left: 56%; animation-delay: 6s"
+      >
+        💎
+      </div>
+      <div
+        class="rise text-red-400 text-4xl"
+        style="left: 72%; animation-delay: 1s"
+      >
+        💘
+      </div>
+      <div
+        class="rise text-green-400 text-2xl"
+        style="left: 88%; animation-delay: 3s"
+      >
+        🌟
+      </div>
+    </div>
+
+    <main
+      class="w-full container-max bg-white rounded-3xl shadow-2xl p-6 md:p-10 relative overflow-hidden z-10 max-w-2xl"
+    >
+      <!-- Decorative floating icons (desktop only) -->
+      <div class="absolute top-6 left-6 text-pink-400 text-4xl floating-icon">
+        ❤️
+      </div>
+      <div
+        class="absolute bottom-6 right-6 text-purple-400 text-4xl floating-icon"
+      >
+        ✨
+      </div>
+      <div class="absolute top-1/2 left-3 text-blue-400 text-4xl floating-icon">
+        💎
+      </div>
+      <div
+        class="absolute bottom-12 left-1/4 text-red-400 text-4xl floating-icon"
+      >
+        💘
+      </div>
+      <div
+        class="absolute top-10 right-1/4 text-yellow-400 text-4xl floating-icon"
+      >
+        🌟
+      </div>
+
+      <header class="text-center mb-6">
+        <h1 class="text-3xl md:text-4xl font-extrabold text-pink-600">
+          For My Gorgeous <span class="text-pink-800">Tina</span> 💖
+        </h1>
+        <p class="mt-2 text-gray-700 md:text-lg typing">
+          Congratulations, Tina — your dedication and hard work inspire me every
+          day.
+        </p>
+      </header>
+
+      <!-- Gallery with alternating text blocks -->
+      <section class="space-y-6">
+        <!-- item 1: image left, text right -->
+        <div class="flex flex-col md:flex-row items-center gap-4 md:gap-6">
+          <div
+            class="md:w-1/2 w-full img-frame rounded-xl shadow-lg overflow-hidden"
+          >
+            <img
+              src="images/tina.jpg"
+              alt="Tina 1"
+              class="w-full h-56 md:h-48 object-cover transform hover:scale-105 transition duration-500"
+            />
+          </div>
+          <div class="md:w-1/2 w-full">
+            <div class="p-4 md:p-6 bg-pink-50 rounded-xl slide-right">
+              <div class="badge inline-block mb-2">Achievement</div>
+              <h3 class="text-lg font-semibold">Late nights, big wins</h3>
+              <p class="mt-2 text-gray-700">
+                You put in the hours when it counted. That focus turned into
+                results — and I noticed every single step.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- item 2: image right, text left -->
+        <div
+          class="flex flex-col md:flex-row-reverse items-center gap-4 md:gap-6"
+        >
+          <div
+            class="md:w-1/2 w-full img-frame rounded-xl shadow-lg overflow-hidden"
+          >
+            <img
+              src="images/IMG-20240825-WA0004.jpg"
+              alt="Tina 2"
+              class="w-full h-56 md:h-48 object-cover transform hover:scale-105 transition duration-500"
+            />
+          </div>
+          <div class="md:w-1/2 w-full">
+            <div class="p-4 md:p-6 bg-purple-50 rounded-xl slide-left">
+              <div class="badge inline-block mb-2">Focus</div>
+              <h3 class="text-lg font-semibold">Unshakable focus</h3>
+              <p class="mt-2 text-gray-700">
+                While others paused, you pushed. That kind of discipline doesn’t
+                go unnoticed — not by me, and not by life.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- item 3: image left, text right -->
+        <div class="flex flex-col md:flex-row items-center gap-4 md:gap-6">
+          <div
+            class="md:w-1/2 w-full img-frame rounded-xl shadow-lg overflow-hidden"
+          >
+            <img
+              src="images/IMG-20240824-WA0011.jpg"
+              alt="Tina 3"
+              class="w-full h-56 md:h-48 object-cover transform hover:scale-105 transition duration-500"
+            />
+          </div>
+          <div class="md:w-1/2 w-full">
+            <div class="p-4 md:p-6 bg-yellow-50 rounded-xl slide-right">
+              <div class="badge inline-block mb-2">Heart</div>
+              <h3 class="text-lg font-semibold">Kind & relentless</h3>
+              <p class="mt-2 text-gray-700">
+                All that hustle, with that soft heart of yours — it's a rare
+                combo. Proud of how you show up.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- item 4: image right, text left -->
+        <div
+          class="flex flex-col md:flex-row-reverse items-center gap-4 md:gap-6"
+        >
+          <div
+            class="md:w-1/2 w-full img-frame rounded-xl shadow-lg overflow-hidden"
+          >
+            <img
+              src="images/IMG-20240824-WA0009.jpg"
+              alt="Tina 4"
+              class="w-full h-56 md:h-48 object-cover transform hover:scale-105 transition duration-500"
+            />
+          </div>
+          <div class="md:w-1/2 w-full">
+            <div class="p-4 md:p-6 bg-green-50 rounded-xl slide-left">
+              <div class="badge inline-block mb-2">Future</div>
+              <h3 class="text-lg font-semibold">This is only the beginning</h3>
+              <p class="mt-2 text-gray-700">
+                What you built today is the foundation for so much more. I can’t
+                wait to see where you go next.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="mt-6 text-center">
+        <p class="text-gray-600 italic">
+          Every picture tells a story… and every story reminds me why I’m lucky
+          to have you. 💕
+        </p>
+
+        <div
+          class="mt-4 flex flex-col md:flex-row items-center justify-center gap-4"
+        >
+          <button
+            id="hugBtn"
+            class="w-full md:w-auto bg-pink-500 hover:bg-pink-600 text-white px-6 py-2 rounded-full shadow-lg transform hover:scale-105 transition duration-300"
+          >
+            🤗 Send Virtual Hug
+          </button>
+          <button
+            id="giftBtn"
+            class="w-full md:w-auto bg-white border border-pink-200 px-6 py-2 rounded-full shadow-sm text-pink-600"
+          >
+            Pick a sweet treat
+          </button>
+        </div>
+      </footer>
+    </main>
+
+    <script>
+      // Helper: open WhatsApp with a prefilled message (Kenya number provided by user)
+      const phoneNumber = "254743394373"; // international format without +
+      function openWhatsApp(msg) {
+        const encoded = encodeURIComponent(msg);
+        const url = `https://wa.me/${phoneNumber}?text=${encoded}`;
+        window.open(url, "_blank");
+      }
+
+      document.getElementById("hugBtn").addEventListener("click", () => {
+        // animated confirmation + open whatsapp
+        const hugMsg =
+          "Hey Tina! 🤗 Sending you a big virtual hug — so proud of your dedication and hard work. Love, MastermindCreat 💖";
+        // small in-page animation
+        const btn = document.getElementById("hugBtn");
+        btn.classList.add("animate__animated", "animate__pulse");
+        setTimeout(() => btn.classList.remove("animate__pulse"), 900);
+
+        // open whatsapp to send text
+        openWhatsApp(hugMsg);
+      });
+
+      // Optional: gift button placeholder
+      document.getElementById("giftBtn").addEventListener("click", () => {
+        alert(
+          "Choose a sweet treat for Tina — idea: surprise brunch, flowers, or a cozy movie night."
+        );
+      });
+
+      // Entrance stagger for slide animations
+      document.addEventListener("DOMContentLoaded", () => {
+        const lefts = document.querySelectorAll(".slide-left");
+        const rights = document.querySelectorAll(".slide-right");
+        lefts.forEach(
+          (el, i) => (el.style.animationDelay = 0.15 + i * 0.08 + "s")
+        );
+        rights.forEach(
+          (el, i) => (el.style.animationDelay = 0.15 + i * 0.08 + "s")
+        );
+      });
+    </script>
+  </body>
+</html>

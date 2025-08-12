@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tina's Success Card</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <style>
+      /* Base animations */
+      .floating-icon {
+        animation: float 4s ease-in-out infinite;
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .rise {
+        position: absolute;
+        animation: rise 10s linear infinite;
+        opacity: 0.6;
+      }
+      @keyframes rise {
+        0% {
+          transform: translateY(100vh) scale(0.5);
+          opacity: 0.7;
+        }
+        100% {
+          transform: translateY(-10vh) scale(1);
+          opacity: 0;
+        }
+      }
+
+      /* Enhanced typing effect */
+      .typing-container {
+        height: 1.5em;
+        overflow: hidden;
+      }
+      .typing-text {
+        display: inline-block;
+        overflow: hidden;
+        white-space: nowrap;
+        border-right: 3px solid rgba(219, 39, 119, 0.9);
+        animation: typing 3.5s steps(40, end),
+          blink-caret 0.75s step-end infinite;
+      }
+      @keyframes typing {
+        from {
+          width: 0;
+        }
+        to {
+          width: 100%;
+        }
+      }
+      @keyframes blink-caret {
+        from,
+        to {
+          border-color: transparent;
+        }
+        50% {
+          border-color: rgba(219, 39, 119, 0.9);
+        }
+      }
+      .typing-cursor {
+        display: inline-block;
+        width: 3px;
+        height: 1em;
+        background-color: rgba(219, 39, 119, 0.9);
+        animation: blink 0.75s step-end infinite;
+      }
+
+      /* Slide-in text blocks */
+      .slide-left {
+        transform: translateX(-18px);
+        opacity: 0;
+        animation: slideInLeft 0.7s forwards;
+      }
+      .slide-right {
+        transform: translateX(18px);
+        opacity: 0;
+        animation: slideInRight 0.7s forwards;
+      }
+      @keyframes slideInLeft {
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      @keyframes slideInRight {
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      /* subtle shimmer for image frames */
+      .img-frame {
+        position: relative;
+        overflow: hidden;
+      }
+      .img-frame::after {
+        content: "";
+        position: absolute;
+        left: -60%;
+        top: 0;
+        width: 40%;
+        height: 100%;
+        background: linear-gradient(
+          120deg,
+          rgba(255, 255, 255, 0),
+          rgba(255, 255, 255, 0.18),
+          rgba(255, 255, 255, 0)
+        );
+        transform: skewX(-18deg);
+        animation: shimmer 2.2s infinite;
+        pointer-events: none;
+      }
+      @keyframes shimmer {
+        0% {
+          left: -60%;
+        }
+        100% {
+          left: 160%;
+        }
+      }
+
+      /* Confetti animation */
+      .confetti {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background-color: #f00;
+        opacity: 0;
+        animation: confettiDrop 3s ease-in forwards;
+      }
+      @keyframes confettiDrop {
+        0% {
+          transform: translateY(-100px) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(100vh) rotate(360deg);
+          opacity: 0;
+        }
+      }
+
+      /* Heartbeat animation */
+      .heartbeat {
+        animation: heartbeat 1.5s ease-in-out infinite both;
+      }
+      @keyframes heartbeat {
+        0% {
+          transform: scale(1);
+        }
+        14% {
+          transform: scale(1.1);
+        }
+        28% {
+          transform: scale(1);
+        }
+        42% {
+          transform: scale(1.1);
+        }
+        70% {
+          transform: scale(1);
+        }
+      }
+
+      /* Music player styles */
+      .music-player {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 100;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 50px;
+        padding: 10px 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        backdrop-filter: blur(5px);
+      }
+      .music-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #f472b6, #ec4899);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border: none;
+        transition: all 0.3s ease;
+      }
+      .music-btn:hover {
+        transform: scale(1.1);
+      }
+      .music-info {
+        max-width: 0;
+        overflow: hidden;
+        white-space: nowrap;
+        transition: max-width 0.5s ease, margin-left 0.3s ease;
+        font-size: 14px;
+        color: #6b7280;
+      }
+      .music-player:hover .music-info {
+        max-width: 200px;
+        margin-left: 8px;
+      }
+
+      /* Floating hearts */
+      .floating-heart {
+        position: absolute;
+        opacity: 0;
+        animation: floatUp 4s linear forwards;
+      }
+      @keyframes floatUp {
+        0% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-100vh) rotate(360deg);
+          opacity: 0;
+        }
+      }
+
+      /* Scrollable content */
+      .scrollable-content {
+        max-height: 80vh;
+        overflow-y: auto;
+        padding-right: 8px;
+      }
+      .scrollable-content::-webkit-scrollbar {
+        width: 6px;
+      }
+      .scrollable-content::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+      }
+      .scrollable-content::-webkit-scrollbar-thumb {
+        background: rgba(236, 72, 153, 0.5);
+        border-radius: 10px;
+      }
+      .scrollable-content::-webkit-scrollbar-thumb:hover {
+        background: rgba(236, 72, 153, 0.7);
+      }
+
+      /* Button styles */
+      .action-btn {
+        transition: all 0.3s ease;
+        transform: translateY(0);
+      }
+      .action-btn:hover {
+        transform: translateY(-3px);
+      }
+      .action-btn:active {
+        transform: translateY(1px);
+      }
+
+      /* Responsive adjustments */
+      @media (min-width: 768px) {
+        /* Desktop styles */
+        .responsive-img {
+          height: 192px;
+          width: 100%;
+          object-fit: cover;
+        }
+        .content-text {
+          font-size: 1rem;
+        }
+        .content-heading {
+          font-size: 1.125rem;
+        }
+      }
+      @media (max-width: 767px) {
+        /* Mobile styles */
+        .responsive-img {
+          height: 120px;
+          width: 90px;
+          object-fit: cover;
+          border-radius: 8px;
+        }
+        .content-item {
+          display: flex;
+          flex-direction: row;
+          align-items: flex-start;
+          gap: 12px;
+        }
+        .content-text {
+          font-size: 0.875rem;
+          line-height: 1.4;
+        }
+        .content-heading {
+          font-size: 1rem;
+        }
+        .content-card {
+          padding: 12px;
+        }
+        .badge {
+          padding: 0.25rem 0.5rem;
+          font-size: 0.75rem;
+        }
+      }
+
+      /* Love burst effect */
+      .love-burst {
+        position: absolute;
+        font-size: 0;
+        opacity: 0;
+        animation: loveBurst 1s ease-out forwards;
+      }
+      @keyframes loveBurst {
+        0% {
+          transform: scale(0);
+          opacity: 0;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1.5);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200 min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
+  >
+    <!-- Audio element for background music (hidden) -->
+    <audio id="backgroundMusic" loop>
+      <source
+        src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+        type="audio/mpeg"
+      />
+      Your browser does not support the audio element.
+    </audio>
+
+    <!-- Music player control -->
+    <div class="music-player">
+      <button id="musicToggle" class="music-btn">
+        <svg
+          id="playIcon"
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
+        <svg
+          id="pauseIcon"
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          style="display: none"
+        >
+          <rect x="6" y="4" width="4" height="16"></rect>
+          <rect x="14" y="4" width="4" height="16"></rect>
+        </svg>
+      </button>
+      <div class="music-info">Play background music</div>
+    </div>
+
+    <!-- Rising hearts and stars -->
+    <div class="pointer-events-none absolute inset-0">
+      <div class="rise text-pink-400 text-3xl" style="left: 8%">❤️</div>
+      <div
+        class="rise text-purple-400 text-4xl"
+        style="left: 24%; animation-delay: 2s"
+      >
+        💖
+      </div>
+      <div
+        class="rise text-yellow-400 text-2xl"
+        style="left: 40%; animation-delay: 4s"
+      >
+        ⭐
+      </div>
+      <div
+        class="rise text-blue-400 text-3xl"
+        style="left: 56%; animation-delay: 6s"
+      >
+        💎
+      </div>
+      <div
+        class="rise text-red-400 text-4xl"
+        style="left: 72%; animation-delay: 1s"
+      >
+        💘
+      </div>
+      <div
+        class="rise text-green-400 text-2xl"
+        style="left: 88%; animation-delay: 3s"
+      >
+        🌟
+      </div>
+    </div>
+
+    <main
+      class="w-full container-max bg-white rounded-3xl shadow-2xl p-6 md:p-10 relative overflow-hidden z-10 max-w-2xl"
+    >
+      <!-- Decorative floating icons -->
+      <div class="absolute top-6 left-6 text-pink-400 text-4xl floating-icon">
+        ❤️
+      </div>
+      <div
+        class="absolute bottom-6 right-6 text-purple-400 text-4xl floating-icon"
+      >
+        ✨
+      </div>
+      <div class="absolute top-1/2 left-3 text-blue-400 text-4xl floating-icon">
+        💎
+      </div>
+      <div
+        class="absolute bottom-12 left-1/4 text-red-400 text-4xl floating-icon"
+      >
+        💘
+      </div>
+      <div
+        class="absolute top-10 right-1/4 text-yellow-400 text-4xl floating-icon"
+      >
+        🌟
+      </div>
+
+      <!-- Scrollable content container -->
+      <div class="scrollable-content">
+        <!-- Enhanced Header Section -->
+        <header class="text-center mb-10 relative">
+          <!-- Main Title with heartbeat effect -->
+          <div class="heartbeat mb-6">
+            <h1
+              class="text-4xl md:text-5xl font-extrabold text-pink-600 drop-shadow-lg"
+            >
+              For My Gorgeous
+              <span class="text-pink-800 italic">Tina</span>
+              <span class="inline-block love-emoji animate-bounce">💖</span>
+            </h1>
+            <p class="mt-2 text-gray-600 md:text-lg italic">
+              A celebration of your strength, beauty, and brilliance
+            </p>
+          </div>
+
+          <!-- Typing animation area -->
+          <div
+            class="typing-container h-10 md:h-12 flex flex-col items-center justify-center space-y-2"
+          >
+            <p class="text-gray-700 md:text-lg typing-text font-medium">
+              Congratulations, Tina — your dedication and hard work inspire me
+              every single day.
+            </p>
+            <p class="text-gray-500 md:text-base fade-in">
+              You’ve turned challenges into stepping stones, and dreams into
+              reality. 🌟
+            </p>
+          </div>
+
+          <!-- Decorative separator -->
+          <div class="my-6 flex justify-center">
+            <div class="w-24 h-1 bg-pink-400 rounded-full"></div>
+          </div>
+
+          <!-- Personal note -->
+          <p class="text-gray-700 max-w-2xl mx-auto px-4 leading-relaxed">
+            I’m endlessly proud of you, Tina. This moment is more than just an
+            achievement — it’s a reflection of your determination, grace, and
+            unshakable spirit. Keep shining, because the world needs your light
+            more than ever. 💕
+          </p>
+
+          <!-- Floating love emoji that follows mouse -->
+          <div id="followHeart" class="absolute text-3xl opacity-0 select-none">
+            💕
+          </div>
+        </header>
+
+        <!-- Gallery with alternating text blocks -->
+        <section class="space-y-4 md:space-y-6">
+          <!-- item 1: image left, text right -->
+          <div class="content-item">
+            <div
+              class="img-frame rounded-lg shadow-md overflow-hidden flex-shrink-0"
+            >
+              <img
+                src="images/tina.jpg"
+                alt="Tina 1"
+                class="responsive-img transform hover:scale-105 transition duration-500"
+              />
+            </div>
+            <div class="flex-grow">
+              <div class="content-card bg-pink-50 rounded-xl slide-right">
+                <div class="badge inline-block mb-1 md:mb-2">Achievement</div>
+                <h3 class="content-heading font-semibold">
+                  Late nights, big wins
+                </h3>
+                <p class="mt-1 md:mt-2 text-gray-700 content-text">
+                  You put in the hours when it counted. That focus turned into
+                  results — and I noticed every single step.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- item 2: image right, text left -->
+          <div class="content-item">
+            <div
+              class="img-frame rounded-lg shadow-md overflow-hidden flex-shrink-0"
+            >
+              <img
+                src="images/IMG-20240825-WA0004.jpg"
+                alt="Tina 2"
+                class="responsive-img transform hover:scale-105 transition duration-500"
+              />
+            </div>
+            <div class="flex-grow">
+              <div class="content-card bg-purple-50 rounded-xl slide-left">
+                <div class="badge inline-block mb-1 md:mb-2">Focus</div>
+                <h3 class="content-heading font-semibold">Unshakable focus</h3>
+                <p class="mt-1 md:mt-2 text-gray-700 content-text">
+                  While others paused, you pushed. That kind of discipline
+                  doesn't go unnoticed — not by me, and not by life.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- item 3: image left, text right -->
+          <div class="content-item">
+            <div
+              class="img-frame rounded-lg shadow-md overflow-hidden flex-shrink-0"
+            >
+              <img
+                src="images/IMG-20240824-WA0011.jpg"
+                alt="Tina 3"
+                class="responsive-img transform hover:scale-105 transition duration-500"
+              />
+            </div>
+            <div class="flex-grow">
+              <div class="content-card bg-yellow-50 rounded-xl slide-right">
+                <div class="badge inline-block mb-1 md:mb-2">Heart</div>
+                <h3 class="content-heading font-semibold">Kind & relentless</h3>
+                <p class="mt-1 md:mt-2 text-gray-700 content-text">
+                  All that hustle, with that soft heart of yours — it's a rare
+                  combo. Proud of how you show up.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- item 4: image right, text left -->
+          <div class="content-item">
+            <div
+              class="img-frame rounded-lg shadow-md overflow-hidden flex-shrink-0"
+            >
+              <img
+                src="images/IMG-20240824-WA0009.jpg"
+                alt="Tina 4"
+                class="responsive-img transform hover:scale-105 transition duration-500"
+              />
+            </div>
+            <div class="flex-grow">
+              <div class="content-card bg-green-50 rounded-xl slide-left">
+                <div class="badge inline-block mb-1 md:mb-2">Future</div>
+                <h3 class="content-heading font-semibold">
+                  This is only the beginning
+                </h3>
+                <p class="mt-1 md:mt-2 text-gray-700 content-text">
+                  What you built today is the foundation for so much more. I
+                  can't wait to see where you go next.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <footer class="mt-8 text-center pb-4">
+          <p class="text-gray-600 italic content-text mb-6">
+            Every picture tells a story… and every story reminds me why I'm
+            lucky to have you. 💕
+          </p>
+
+          <!-- Enhanced Button Group -->
+          <div class="flex flex-wrap justify-center gap-4">
+            <button
+              id="hugBtn"
+              class="action-btn bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-full shadow-lg relative overflow-hidden"
+            >
+              <span class="relative z-10 flex items-center">
+                <span class="mr-2">🤗</span>
+                Send Virtual Hug
+              </span>
+              <span
+                class="absolute inset-0 bg-pink-700 opacity-0 hover:opacity-10 transition-opacity"
+              ></span>
+            </button>
+
+            <button
+              id="giftBtn"
+              class="action-btn bg-white border-2 border-pink-300 hover:border-pink-400 text-pink-600 px-6 py-3 rounded-full shadow-sm relative overflow-hidden"
+            >
+              <span class="relative z-10 flex items-center">
+                <span class="mr-2">💝</span>
+                Special Surprise
+              </span>
+              <span
+                class="absolute inset-0 bg-pink-100 opacity-0 hover:opacity-30 transition-opacity"
+              ></span>
+            </button>
+
+            <button
+              id="loveBtn"
+              class="action-btn bg-gradient-to-r from-pink-400 to-purple-400 hover:from-pink-500 hover:to-purple-500 text-white px-6 py-3 rounded-full shadow-lg relative overflow-hidden"
+            >
+              <span class="relative z-10 flex items-center">
+                <span class="mr-2">❤️</span>
+                Send Love
+              </span>
+              <span
+                class="absolute inset-0 bg-white opacity-0 hover:opacity-10 transition-opacity"
+              ></span>
+            </button>
+          </div>
+        </footer>
+      </div>
+    </main>
+
+    <!-- Hidden confetti container -->
+    <div
+      id="confettiContainer"
+      class="pointer-events-none absolute inset-0 overflow-hidden"
+    ></div>
+
+    <script>
+      // Helper: open WhatsApp with a prefilled message (Kenya number provided by user)
+      const phoneNumber = "254743394373"; // international format without +
+      function openWhatsApp(msg) {
+        const encoded = encodeURIComponent(msg);
+        const url = `https://wa.me/${phoneNumber}?text=${encoded}`;
+        window.open(url, "_blank");
+      }
+
+      // Music control
+      const music = document.getElementById("backgroundMusic");
+      const musicToggle = document.getElementById("musicToggle");
+      const playIcon = document.getElementById("playIcon");
+      const pauseIcon = document.getElementById("pauseIcon");
+
+      // Start with music paused
+      music.volume = 0.3; // Set lower volume
+
+      musicToggle.addEventListener("click", () => {
+        if (music.paused) {
+          music.play();
+          playIcon.style.display = "none";
+          pauseIcon.style.display = "block";
+        } else {
+          music.pause();
+          playIcon.style.display = "block";
+          pauseIcon.style.display = "none";
+        }
+      });
+
+      // Create floating hearts
+      function createFloatingHeart() {
+        const heart = document.createElement("div");
+        heart.className = "floating-heart";
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = Math.random() * 20 + 10 + "px";
+        heart.style.animationDuration = Math.random() * 3 + 2 + "s";
+        document.body.appendChild(heart);
+
+        // Remove heart after animation completes
+        setTimeout(() => {
+          heart.remove();
+        }, 4000);
+      }
+
+      // Create confetti
+      function createConfetti() {
+        const colors = ["#f87171", "#60a5fa", "#34d399", "#fbbf24", "#a78bfa"];
+        const confettiContainer = document.getElementById("confettiContainer");
+
+        for (let i = 0; i < 100; i++) {
+          const confetti = document.createElement("div");
+          confetti.className = "confetti";
+          confetti.style.left = Math.random() * 100 + "vw";
+          confetti.style.backgroundColor =
+            colors[Math.floor(Math.random() * colors.length)];
+          confetti.style.animationDelay = Math.random() * 2 + "s";
+          confetti.style.width = Math.random() * 10 + 5 + "px";
+          confetti.style.height = Math.random() * 10 + 5 + "px";
+          confetti.style.borderRadius = Math.random() > 0.5 ? "50%" : "0";
+          confettiContainer.appendChild(confetti);
+
+          // Remove confetti after animation
+          setTimeout(() => {
+            confetti.remove();
+          }, 3000);
+        }
+      }
+
+      // Create love burst effect
+      function createLoveBurst(x, y) {
+        const burst = document.createElement("div");
+        burst.className = "love-burst text-4xl text-pink-500";
+        burst.innerHTML = "❤️";
+        burst.style.position = "fixed";
+        burst.style.left = `${x}px`;
+        burst.style.top = `${y}px`;
+        burst.style.transformOrigin = "center";
+        burst.style.zIndex = "100";
+        document.body.appendChild(burst);
+
+        setTimeout(() => {
+          burst.remove();
+        }, 1000);
+      }
+
+      // Mouse following heart
+      const followHeart = document.getElementById("followHeart");
+      document.addEventListener("mousemove", (e) => {
+        followHeart.style.left = `${e.clientX + 15}px`;
+        followHeart.style.top = `${e.clientY + 15}px`;
+      });
+
+      // Header love emoji hover effect
+      const loveEmoji = document.querySelector(".love-emoji");
+      loveEmoji.addEventListener("mouseenter", () => {
+        followHeart.style.opacity = "1";
+        followHeart.style.transition = "opacity 0.3s";
+      });
+      loveEmoji.addEventListener("mouseleave", () => {
+        followHeart.style.opacity = "0";
+      });
+
+      // Button click handlers
+      document.getElementById("hugBtn").addEventListener("click", () => {
+        // animated confirmation + open whatsapp
+        const hugMsg =
+          "Hey Tina! 🤗 Sending you a big virtual hug — so proud of your dedication and hard work. Love, MastermindCreat 💖";
+
+        // Button animation
+        const btn = document.getElementById("hugBtn");
+        btn.classList.add("animate__animated", "animate__pulse");
+        setTimeout(() => btn.classList.remove("animate__pulse"), 900);
+
+        // Create floating hearts
+        for (let i = 0; i < 10; i++) {
+          setTimeout(createFloatingHeart, i * 200);
+        }
+
+        // open whatsapp to send text
+        openWhatsApp(hugMsg);
+      });
+
+      // Special surprise button
+      document.getElementById("giftBtn").addEventListener("click", () => {
+        createConfetti();
+
+        // Show a sweet message
+        const messages = [
+          "You deserve all the happiness in the world!",
+          "Your hard work is inspiring!",
+          "The best is yet to come for you!",
+          "You're amazing just the way you are!",
+          "Success looks beautiful on you!",
+        ];
+
+        const randomMessage =
+          messages[Math.floor(Math.random() * messages.length)];
+
+        // Create a modal with the message
+        const modal = document.createElement("div");
+        modal.className =
+          "fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50";
+        modal.innerHTML = `
+          <div class="bg-white rounded-2xl p-6 max-w-sm mx-4 text-center animate__animated animate__zoomIn">
+            <div class="text-5xl mb-4">🎁</div>
+            <h3 class="text-xl font-bold text-pink-600 mb-2">For You, Tina</h3>
+            <p class="text-gray-700 mb-4">${randomMessage}</p>
+            <button class="bg-pink-500 text-white px-4 py-2 rounded-full hover:bg-pink-600 transition">
+              Close
+            </button>
+          </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        // Close button functionality
+        modal.querySelector("button").addEventListener("click", () => {
+          modal.remove();
+        });
+      });
+
+      // Love button
+      document.getElementById("loveBtn").addEventListener("click", (e) => {
+        const btn = e.currentTarget;
+        const rect = btn.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+
+        // Create multiple love bursts
+        for (let i = 0; i < 5; i++) {
+          setTimeout(() => {
+            createLoveBurst(
+              x + (Math.random() * 40 - 20),
+              y + (Math.random() * 40 - 20)
+            );
+          }, i * 100);
+        }
+
+        // Button animation
+        btn.classList.add("animate__animated", "animate__rubberBand");
+        setTimeout(() => btn.classList.remove("animate__rubberBand"), 1000);
+
+        // Open WhatsApp with love message
+        const loveMsg =
+          "Tina, I just wanted to remind you how amazing you are! ❤️ You inspire me every day with your strength and kindness. Love you!";
+        openWhatsApp(loveMsg);
+      });
+
+      // Entrance stagger for slide animations
+      document.addEventListener("DOMContentLoaded", () => {
+        const lefts = document.querySelectorAll(".slide-left");
+        const rights = document.querySelectorAll(".slide-right");
+        lefts.forEach(
+          (el, i) => (el.style.animationDelay = 0.15 + i * 0.08 + "s")
+        );
+        rights.forEach(
+          (el, i) => (el.style.animationDelay = 0.15 + i * 0.08 + "s")
+        );
+
+        // Start floating hearts occasionally
+        setInterval(createFloatingHeart, 3000);
+      });
+    </script>
+  </body>
+</html>
