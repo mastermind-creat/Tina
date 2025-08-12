@@ -79,6 +79,26 @@
           opacity: 0.7;
         }
       }
+      .heart-beat {
+        animation: heartBeat 1.5s infinite;
+      }
+      @keyframes heartBeat {
+        0% {
+          transform: scale(1);
+        }
+        14% {
+          transform: scale(1.3);
+        }
+        28% {
+          transform: scale(1);
+        }
+        42% {
+          transform: scale(1.3);
+        }
+        70% {
+          transform: scale(1);
+        }
+      }
     </style>
   </head>
   <body
@@ -101,6 +121,13 @@
     <p id="message" class="text-2xl md:text-3xl z-10 mb-8">
       Some memories just float to the top...
     </p>
+
+    <button
+      id="playButton"
+      class="bg-pink-500 text-white px-6 py-3 rounded-full font-bold text-xl hover:bg-pink-600 transition duration-300 flex items-center justify-center z-10 mb-8 heart-beat"
+    >
+      Pause Unity ❤️
+    </button>
 
     <script>
       // Particles.js configuration
@@ -234,21 +261,34 @@
       }
       typeWriter();
 
-      // Text-to-Speech
-      //   if ("speechSynthesis" in window) {
-      //     const utterance = new SpeechSynthesisUtterance(
-      //       "Some memories just float to the top... For Tina."
-      //     );
-      //     utterance.lang = "en-US";
-      //     utterance.volume = 0.8;
-      //     utterance.rate = 0.9;
-      //     speechSynthesis.speak(utterance);
-      //   }
+      // Audio player with autoplay
+      const audio = new Audio("audio/Unity.mp3");
+      audio.loop = true;
+      audio.play().catch((error) => {
+        console.log("Autoplay prevented:", error);
+      });
+      const playButton = document.getElementById("playButton");
+      playButton.addEventListener("click", () => {
+        if (audio.paused) {
+          audio.play();
+          playButton.innerText = "Pause Unity ❤️";
+          // Additional confetti on play
+          confetti({
+            particleCount: 200,
+            spread: 100,
+            origin: { y: 0.5 },
+            colors: ["#C084FC", "#DB2777", "#F472B6", "#ffffff"],
+          });
+        } else {
+          audio.pause();
+          playButton.innerText = "Play Unity ❤️";
+        }
+      });
 
       // Add floating icons
       const body = document.body;
       const numberOfIcons = 15;
-      const icons = ["💖", "✨", "⭐", "🌸", "💫"];
+      const icons = ["💖", "✨", "⭐", "🌸", "💫", "❤️"];
 
       for (let i = 0; i < numberOfIcons; i++) {
         const element = document.createElement("div");
@@ -293,6 +333,25 @@
         element.style.zIndex = 2; // Above icons
         body.appendChild(element);
       }
+
+      // Additional cool feature: Click on name for extra confetti and heart explosion
+      const nameElement = document.querySelector(".text-6xl");
+      nameElement.addEventListener("click", () => {
+        confetti({
+          particleCount: 300,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: ["#C084FC", "#DB2777", "#F472B6"],
+        });
+        confetti({
+          particleCount: 300,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: ["#C084FC", "#DB2777", "#F472B6"],
+        });
+      });
     </script>
   </body>
 </html>
