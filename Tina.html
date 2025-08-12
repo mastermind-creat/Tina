@@ -25,21 +25,13 @@
         animation: float 6s ease-in-out infinite, move 20s linear infinite;
         will-change: transform;
       }
-      .floating-img {
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      }
-      .caption {
-        position: absolute;
-        background-color: rgba(0, 0, 0, 0.6);
+      .floating-word {
         color: white;
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 0.8em;
-        opacity: 0;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+        opacity: 0.6;
         transition: opacity 0.3s ease-in-out;
       }
-      .floating-element:hover .caption {
+      .floating-word:hover {
         opacity: 1;
       }
       @keyframes float {
@@ -65,11 +57,8 @@
         }
       }
       @media (max-width: 768px) {
-        .floating-img {
-          max-width: 80px;
-        }
-        .caption {
-          font-size: 0.7em;
+        .floating-word {
+          font-size: 1em;
         }
       }
       #particles-js {
@@ -77,9 +66,6 @@
         width: 100%;
         height: 100%;
         z-index: 0;
-      }
-      #modal {
-        transition: opacity 0.3s ease-in-out;
       }
       .animate-pulse-slow {
         animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
@@ -96,7 +82,12 @@
     </style>
   </head>
   <body
-    class="bg-gradient-to-br from-purple-400 to-pink-500 h-screen flex flex-col justify-center items-center text-white p-4 text-center overflow-hidden relative"
+    class="h-screen flex flex-col justify-center items-center text-white p-4 text-center overflow-hidden relative"
+    style="
+      background-image: url('images/Tina.jpeg');
+      background-size: cover;
+      background-position: center;
+    "
   >
     <div id="particles-js"></div>
 
@@ -110,27 +101,6 @@
     <p id="message" class="text-2xl md:text-3xl z-10 mb-8">
       Some memories just float to the top...
     </p>
-
-    <div id="floatingPics" class="absolute w-full h-full z-5"></div>
-
-    <div
-      id="modal"
-      class="hidden fixed z-50 inset-0 flex items-center justify-center bg-black bg-opacity-50"
-    >
-      <div class="bg-pink-100 p-6 rounded-lg max-w-lg relative">
-        <img id="modal-img" class="w-full rounded-lg" src="" />
-        <p
-          id="modal-caption"
-          class="text-center text-purple-800 mt-4 font-bold text-xl"
-        ></p>
-        <button
-          onclick="closeModal()"
-          class="mt-4 bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600"
-        >
-          Close
-        </button>
-      </div>
-    </div>
 
     <script>
       // Particles.js configuration
@@ -265,88 +235,15 @@
       typeWriter();
 
       // Text-to-Speech
-      if ("speechSynthesis" in window) {
-        const utterance = new SpeechSynthesisUtterance(
-          "Some memories just float to the top... For Tina."
-        );
-        utterance.lang = "en-US";
-        utterance.volume = 0.8;
-        utterance.rate = 0.9;
-        speechSynthesis.speak(utterance);
-      }
-
-      // Floating pictures
-      const floatingPicsContainer = document.getElementById("floatingPics");
-      const pictures = [
-        {
-          src: "images/tina.jpg", // Replace with your image URL
-          caption: "Just a reminder of how amazing you are 😍",
-          delay: "2s",
-          xOffset: "15vw",
-          yOffset: "20vh",
-        },
-        {
-          src: "images/tina.jpg", // Replace with your second image URL
-          caption: "That smile could light up Kisumu! ✨",
-          delay: "5s",
-          xOffset: "70vw",
-          yOffset: "30vh",
-        },
-        {
-          src: "images/tina.jpg", // Replace with your third image URL
-          caption: "Good kind of chaos, captured perfectly 😉",
-          delay: "8s",
-          xOffset: "30vw",
-          yOffset: "60vh",
-        },
-        // Add more picture objects here
-      ];
-
-      pictures.forEach((pic) => {
-        const container = document.createElement("div");
-        container.classList.add("floating-element");
-        container.style.left = pic.xOffset;
-        container.style.top = pic.yOffset;
-        container.style.animationDelay = pic.delay;
-        container.style.transform = `translate(${Math.random() * 20 - 10}px, ${
-          Math.random() * 20 - 10
-        }px)`; // Initial random offset
-
-        const img = document.createElement("img");
-        img.src = pic.src;
-        img.classList.add("floating-img");
-        img.style.maxWidth = `${50 + Math.random() * 50}px`; // Random size for variety
-
-        const caption = document.createElement("div");
-        caption.classList.add("caption");
-        caption.innerText = pic.caption;
-
-        container.appendChild(img);
-        container.appendChild(caption);
-        floatingPicsContainer.appendChild(container);
-
-        // Modal on click
-        container.addEventListener("click", () => {
-          showModal(pic.src, pic.caption);
-          confetti({
-            particleCount: 100,
-            spread: 90,
-            origin: { y: 0.5 },
-            colors: ["#C084FC", "#DB2777", "#F472B6"],
-          });
-        });
-      });
-
-      // Modal functions
-      function showModal(src, caption) {
-        document.getElementById("modal-img").src = src;
-        document.getElementById("modal-caption").innerText = caption;
-        document.getElementById("modal").classList.remove("hidden");
-      }
-
-      function closeModal() {
-        document.getElementById("modal").classList.add("hidden");
-      }
+      //   if ("speechSynthesis" in window) {
+      //     const utterance = new SpeechSynthesisUtterance(
+      //       "Some memories just float to the top... For Tina."
+      //     );
+      //     utterance.lang = "en-US";
+      //     utterance.volume = 0.8;
+      //     utterance.rate = 0.9;
+      //     speechSynthesis.speak(utterance);
+      //   }
 
       // Add floating icons
       const body = document.body;
@@ -364,6 +261,36 @@
         element.style.animationDelay = `${Math.random() * 10}s`;
         element.style.animationDuration = `${4 + Math.random() * 4}s`; // Slightly different speed for icons
         element.style.zIndex = 1; // Behind pictures but above particles
+        body.appendChild(element);
+      }
+
+      // Add sweet floating words
+      const numberOfWords = 10;
+      const sweetWords = [
+        "Amazing 😍",
+        "Smile ✨",
+        "Chaos 😉",
+        "Love 💖",
+        "Forever 💫",
+        "Memories ⭐",
+        "Sweet 🌸",
+        "Darling ❤️",
+        "Joy 😊",
+        "Passion 🔥",
+      ];
+
+      for (let i = 0; i < numberOfWords; i++) {
+        const element = document.createElement("div");
+        element.innerText =
+          sweetWords[Math.floor(Math.random() * sweetWords.length)];
+        element.classList.add("floating-element", "floating-word");
+        element.style.left = `${Math.random() * 100}vw`;
+        element.style.top = `${Math.random() * 100}vh`;
+        element.style.fontSize = `${20 + Math.random() * 30}px`;
+        element.style.opacity = `${0.4 + Math.random() * 0.6}`;
+        element.style.animationDelay = `${Math.random() * 10}s`;
+        element.style.animationDuration = `${5 + Math.random() * 5}s`; // Different speed for words
+        element.style.zIndex = 2; // Above icons
         body.appendChild(element);
       }
     </script>
