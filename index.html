@@ -1,379 +1,614 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" n />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tina's Success Card</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>For Tina</title>
     <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <style>
-      .floating-icon {
-        animation: float 4s ease-in-out infinite;
+      body {
+        font-family: "Dancing Script", cursive;
+      }
+      .floating-element {
+        position: absolute;
+        animation: float 6s ease-in-out infinite, move 20s linear infinite;
+        will-change: transform;
+      }
+      .floating-word {
+        color: white;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+        opacity: 0.6;
+        transition: opacity 0.3s ease-in-out;
+      }
+      .floating-word:hover {
+        opacity: 1;
       }
       @keyframes float {
-        0%,
-        100% {
+        0% {
           transform: translateY(0);
         }
         50% {
-          transform: translateY(-10px);
+          transform: translateY(-15px);
+        }
+        100% {
+          transform: translateY(0);
         }
       }
-
-      .rise {
-        position: absolute;
-        animation: rise 10s linear infinite;
-        opacity: 0.6;
-      }
-      @keyframes rise {
+      @keyframes move {
         0% {
-          transform: translateY(100vh) scale(0.5);
+          transform: translateX(10vw) rotate(0deg);
+        }
+        50% {
+          transform: translateX(90vw) rotate(180deg);
+        }
+        100% {
+          transform: translateX(10vw) rotate(360deg);
+        }
+      }
+      @media (max-width: 768px) {
+        .floating-word {
+          font-size: 1em;
+        }
+      }
+      #particles-js {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+      }
+      .animate-pulse-slow {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
           opacity: 0.7;
         }
-        100% {
-          transform: translateY(-10vh) scale(1);
-          opacity: 0;
-        }
       }
-
-      /* Typing effect for header/short lines */
-      .typing {
-        overflow: hidden;
-        white-space: nowrap;
-        border-right: 3px solid rgba(219, 39, 119, 0.9);
-        animation: typing 4s steps(40, end), blink 0.75s step-end infinite;
+      .heart-beat {
+        animation: heartBeat 1.5s infinite;
       }
-      @keyframes typing {
-        from {
-          width: 0;
-        }
-        to {
-          width: 100%;
-        }
-      }
-      @keyframes blink {
-        50% {
-          border-color: transparent;
-        }
-      }
-
-      /* Slide-in text blocks */
-      .slide-left {
-        transform: translateX(-18px);
-        opacity: 0;
-        animation: slideInLeft 0.7s forwards;
-      }
-      .slide-right {
-        transform: translateX(18px);
-        opacity: 0;
-        animation: slideInRight 0.7s forwards;
-      }
-      @keyframes slideInLeft {
-        to {
-          transform: translateX(0);
-          opacity: 1;
-        }
-      }
-      @keyframes slideInRight {
-        to {
-          transform: translateX(0);
-          opacity: 1;
-        }
-      }
-
-      /* subtle shimmer for image frames */
-      .img-frame {
-        position: relative;
-        overflow: hidden;
-      }
-      .img-frame::after {
-        content: "";
-        position: absolute;
-        left: -60%;
-        top: 0;
-        width: 40%;
-        height: 100%;
-        background: linear-gradient(
-          120deg,
-          rgba(255, 255, 255, 0),
-          rgba(255, 255, 255, 0.18),
-          rgba(255, 255, 255, 0)
-        );
-        transform: skewX(-18deg);
-        animation: shimmer 2.2s infinite;
-        pointer-events: none;
-      }
-      @keyframes shimmer {
+      @keyframes heartBeat {
         0% {
-          left: -60%;
+          transform: scale(1);
+        }
+        14% {
+          transform: scale(1.3);
+        }
+        28% {
+          transform: scale(1);
+        }
+        42% {
+          transform: scale(1.3);
+        }
+        70% {
+          transform: scale(1);
+        }
+      }
+      /* New styles for special message */
+      .special-message {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        background: rgba(255, 255, 255, 0.9);
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        z-index: 100;
+        max-width: 80%;
+        text-align: center;
+        color: #db2777;
+        font-weight: bold;
+        animation: popIn 0.5s forwards;
+      }
+      @keyframes popIn {
+        0% {
+          transform: translate(-50%, -50%) scale(0);
+        }
+        80% {
+          transform: translate(-50%, -50%) scale(1.1);
         }
         100% {
-          left: 160%;
+          transform: translate(-50%, -50%) scale(1);
         }
       }
-
-      /* responsive tweaks */
-      @media (min-width: 768px) {
-        .container-max {
-          max-width: 900px;
-        }
+      .memory-photo {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        max-width: 90%;
+        max-height: 80vh;
+        border-radius: 1rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        z-index: 100;
+        animation: popIn 0.5s forwards;
+        object-fit: contain;
       }
-      @media (max-width: 767px) {
-        .floating-icon {
-          display: none;
-        }
+      .close-btn {
+        position: absolute;
+        top: -15px;
+        right: -15px;
+        background: #db2777;
+        color: white;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        z-index: 101;
       }
-
-      /* small helpers */
-      .badge {
-        background: linear-gradient(90deg, #ffb4d6, #ffd6a5);
-        padding: 0.35rem 0.7rem;
-        border-radius: 999px;
-        font-weight: 600;
+      .daily-message {
+        position: fixed;
+        bottom: 20px;
+        left: 0;
+        right: 0;
+        background: rgba(219, 39, 119, 0.9);
+        color: white;
+        padding: 1rem;
+        text-align: center;
+        z-index: 50;
+        animation: slideUp 1s forwards;
+      }
+      @keyframes slideUp {
+        from {
+          transform: translateY(100%);
+        }
+        to {
+          transform: translateY(0);
+        }
       }
     </style>
   </head>
   <body
-    class="bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200 min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
+    class="h-screen flex flex-col justify-center items-center text-white p-4 text-center overflow-hidden relative"
+    style="
+      background-image: url('images/Tina.jpeg');
+      background-size: cover;
+      background-position: center;
+    "
   >
-    <!-- Rising hearts and stars -->
-    <div class="pointer-events-none absolute inset-0">
-      <div class="rise text-pink-400 text-3xl" style="left: 8%">❤️</div>
-      <div
-        class="rise text-purple-400 text-4xl"
-        style="left: 24%; animation-delay: 2s"
-      >
-        💖
-      </div>
-      <div
-        class="rise text-yellow-400 text-2xl"
-        style="left: 40%; animation-delay: 4s"
-      >
-        ⭐
-      </div>
-      <div
-        class="rise text-blue-400 text-3xl"
-        style="left: 56%; animation-delay: 6s"
-      >
-        💎
-      </div>
-      <div
-        class="rise text-red-400 text-4xl"
-        style="left: 72%; animation-delay: 1s"
-      >
-        💘
-      </div>
-      <div
-        class="rise text-green-400 text-2xl"
-        style="left: 88%; animation-delay: 3s"
-      >
-        🌟
-      </div>
+    <div id="particles-js"></div>
+
+    <div
+      class="text-6xl md:text-8xl font-bold mb-8 z-10 animate-float animate-pulse-slow"
+      style="animation-delay: 0.5s"
+      id="nameElement"
+    >
+      Tina
     </div>
 
-    <main
-      class="w-full container-max bg-white rounded-3xl shadow-2xl p-6 md:p-10 relative overflow-hidden z-10 max-w-2xl"
+    <p id="message" class="text-2xl md:text-3xl z-10 mb-8">
+      Some memories just float to the top...
+    </p>
+
+    <button
+      id="playButton"
+      class="bg-pink-500 text-white px-6 py-3 rounded-full font-bold text-xl hover:bg-pink-600 transition duration-300 flex items-center justify-center z-10 mb-8 heart-beat"
     >
-      <!-- Decorative floating icons (desktop only) -->
-      <div class="absolute top-6 left-6 text-pink-400 text-4xl floating-icon">
-        ❤️
-      </div>
-      <div
-        class="absolute bottom-6 right-6 text-purple-400 text-4xl floating-icon"
-      >
-        ✨
-      </div>
-      <div class="absolute top-1/2 left-3 text-blue-400 text-4xl floating-icon">
-        💎
-      </div>
-      <div
-        class="absolute bottom-12 left-1/4 text-red-400 text-4xl floating-icon"
-      >
-        💘
-      </div>
-      <div
-        class="absolute top-10 right-1/4 text-yellow-400 text-4xl floating-icon"
-      >
-        🌟
-      </div>
+      Pause Unity ❤️
+    </button>
 
-      <header class="text-center mb-6">
-        <h1 class="text-3xl md:text-4xl font-extrabold text-pink-600">
-          For My Gorgeous <span class="text-pink-800">Tina</span> 💖
-        </h1>
-        <p class="mt-2 text-gray-700 md:text-lg typing">
-          Congratulations, Tina — your dedication and hard work inspire me every
-          day.
-        </p>
-      </header>
-
-      <!-- Gallery with alternating text blocks -->
-      <section class="space-y-6">
-        <!-- item 1: image left, text right -->
-        <div class="flex flex-col md:flex-row items-center gap-4 md:gap-6">
-          <div
-            class="md:w-1/2 w-full img-frame rounded-xl shadow-lg overflow-hidden"
-          >
-            <img
-              src="images/tina.jpg"
-              alt="Tina 1"
-              class="w-full h-56 md:h-48 object-cover transform hover:scale-105 transition duration-500"
-            />
-          </div>
-          <div class="md:w-1/2 w-full">
-            <div class="p-4 md:p-6 bg-pink-50 rounded-xl slide-right">
-              <div class="badge inline-block mb-2">Achievement</div>
-              <h3 class="text-lg font-semibold">Late nights, big wins</h3>
-              <p class="mt-2 text-gray-700">
-                You put in the hours when it counted. That focus turned into
-                results — and I noticed every single step.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- item 2: image right, text left -->
-        <div
-          class="flex flex-col md:flex-row-reverse items-center gap-4 md:gap-6"
-        >
-          <div
-            class="md:w-1/2 w-full img-frame rounded-xl shadow-lg overflow-hidden"
-          >
-            <img
-              src="images/IMG-20240825-WA0004.jpg"
-              alt="Tina 2"
-              class="w-full h-56 md:h-48 object-cover transform hover:scale-105 transition duration-500"
-            />
-          </div>
-          <div class="md:w-1/2 w-full">
-            <div class="p-4 md:p-6 bg-purple-50 rounded-xl slide-left">
-              <div class="badge inline-block mb-2">Focus</div>
-              <h3 class="text-lg font-semibold">Unshakable focus</h3>
-              <p class="mt-2 text-gray-700">
-                While others paused, you pushed. That kind of discipline doesn’t
-                go unnoticed — not by me, and not by life.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- item 3: image left, text right -->
-        <div class="flex flex-col md:flex-row items-center gap-4 md:gap-6">
-          <div
-            class="md:w-1/2 w-full img-frame rounded-xl shadow-lg overflow-hidden"
-          >
-            <img
-              src="images/IMG-20240824-WA0011.jpg"
-              alt="Tina 3"
-              class="w-full h-56 md:h-48 object-cover transform hover:scale-105 transition duration-500"
-            />
-          </div>
-          <div class="md:w-1/2 w-full">
-            <div class="p-4 md:p-6 bg-yellow-50 rounded-xl slide-right">
-              <div class="badge inline-block mb-2">Heart</div>
-              <h3 class="text-lg font-semibold">Kind & relentless</h3>
-              <p class="mt-2 text-gray-700">
-                All that hustle, with that soft heart of yours — it's a rare
-                combo. Proud of how you show up.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- item 4: image right, text left -->
-        <div
-          class="flex flex-col md:flex-row-reverse items-center gap-4 md:gap-6"
-        >
-          <div
-            class="md:w-1/2 w-full img-frame rounded-xl shadow-lg overflow-hidden"
-          >
-            <img
-              src="images/IMG-20240824-WA0009.jpg"
-              alt="Tina 4"
-              class="w-full h-56 md:h-48 object-cover transform hover:scale-105 transition duration-500"
-            />
-          </div>
-          <div class="md:w-1/2 w-full">
-            <div class="p-4 md:p-6 bg-green-50 rounded-xl slide-left">
-              <div class="badge inline-block mb-2">Future</div>
-              <h3 class="text-lg font-semibold">This is only the beginning</h3>
-              <p class="mt-2 text-gray-700">
-                What you built today is the foundation for so much more. I can’t
-                wait to see where you go next.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <footer class="mt-6 text-center">
-        <p class="text-gray-600 italic">
-          Every picture tells a story… and every story reminds me why I’m lucky
-          to have you. 💕
-        </p>
-
-        <div
-          class="mt-4 flex flex-col md:flex-row items-center justify-center gap-4"
-        >
-          <button
-            id="hugBtn"
-            class="w-full md:w-auto bg-pink-500 hover:bg-pink-600 text-white px-6 py-2 rounded-full shadow-lg transform hover:scale-105 transition duration-300"
-          >
-            🤗 Send Virtual Hug
-          </button>
-          <button
-            id="giftBtn"
-            class="w-full md:w-auto bg-white border border-pink-200 px-6 py-2 rounded-full shadow-sm text-pink-600"
-          >
-            Pick a sweet treat
-          </button>
-        </div>
-      </footer>
-    </main>
+    <!-- Daily message container -->
+    <div id="dailyMessage" class="daily-message hidden">
+      <p id="dailyMessageText" class="text-xl md:text-2xl"></p>
+    </div>
 
     <script>
-      // Helper: open WhatsApp with a prefilled message (Kenya number provided by user)
-      const phoneNumber = "254743394373"; // international format without +
-      function openWhatsApp(msg) {
-        const encoded = encodeURIComponent(msg);
-        const url = `https://wa.me/${phoneNumber}?text=${encoded}`;
-        window.open(url, "_blank");
+      // Array of special messages for Tina
+      const specialMessages = [
+        "Tina, you light up my world brighter than a thousand stars ✨",
+        "Every day with you is a beautiful adventure I never want to end 🌸",
+        "Your smile is my favorite thing in the whole universe 💖",
+        "I fall in love with you more each time I see you ❤️",
+        "You're not just becoming my love, but you'll be my favorite everything someday💫",
+        "The way you smile makes my heart skip a beat every time 😍",
+        "I'd choose you in a hundred lifetimes, in a hundred worlds, in any version of reality 🔥",
+      ];
+
+      // Array of memory photos (add your actual image paths)
+      const memoryPhotos = [
+        "images/Tina1.jpg",
+        "images/Tina2.jpg",
+        "images/Tina3.jpg",
+        "images/Tina4.jpg",
+      ];
+
+      // Array of daily messages
+      const dailyMessages = [
+        "Today's reminder: You're absolutely amazing just as you are!",
+        "Daily Tina fact: You make the world a better place just by being in it.",
+        "Special note: Your kindness shines brighter than you realize.",
+        "Thought for today: You're capable of incredible things, my love.",
+        "Just because: You're my favorite person to share this life with.",
+      ];
+
+      // Function to show a special message
+      function showSpecialMessage() {
+        const randomMessage =
+          specialMessages[Math.floor(Math.random() * specialMessages.length)];
+
+        const messageDiv = document.createElement("div");
+        messageDiv.className = "special-message";
+        messageDiv.innerHTML = `
+          <div class="text-3xl md:text-4xl mb-4">For My Beautiful Tina 💖</div>
+          <div class="text-xl md:text-2xl">${randomMessage}</div>
+          <button class="mt-4 bg-pink-500 text-white px-4 py-2 rounded-full">Close</button>
+        `;
+
+        document.body.appendChild(messageDiv);
+
+        // Add confetti
+        heartConfetti();
+
+        // Close button functionality
+        messageDiv.querySelector("button").addEventListener("click", () => {
+          messageDiv.remove();
+        });
+
+        // Auto-close after 8 seconds
+        setTimeout(() => {
+          if (document.body.contains(messageDiv)) {
+            messageDiv.remove();
+          }
+        }, 8000);
       }
 
-      document.getElementById("hugBtn").addEventListener("click", () => {
-        // animated confirmation + open whatsapp
-        const hugMsg =
-          "Hey Tina! 🤗 Sending you a big virtual hug — so proud of your dedication and hard work. Love, MastermindCreat 💖";
-        // small in-page animation
-        const btn = document.getElementById("hugBtn");
-        btn.classList.add("animate__animated", "animate__pulse");
-        setTimeout(() => btn.classList.remove("animate__pulse"), 900);
+      // Function to show a memory photo
+      function showMemoryPhoto() {
+        if (memoryPhotos.length === 0) return;
 
-        // open whatsapp to send text
-        openWhatsApp(hugMsg);
+        const randomPhoto =
+          memoryPhotos[Math.floor(Math.random() * memoryPhotos.length)];
+
+        const photoDiv = document.createElement("div");
+        photoDiv.className = "memory-photo-container";
+        photoDiv.innerHTML = `
+          <img src="${randomPhoto}" class="memory-photo" alt="Special Memory">
+          <div class="close-btn">×</div>
+        `;
+
+        document.body.appendChild(photoDiv);
+
+        // Close button functionality
+        photoDiv.querySelector(".close-btn").addEventListener("click", () => {
+          photoDiv.remove();
+        });
+      }
+
+      // Heart-shaped confetti
+      function heartConfetti() {
+        const heartCanvas = document.createElement("canvas");
+        heartCanvas.width = 200;
+        heartCanvas.height = 200;
+        const ctx = heartCanvas.getContext("2d");
+
+        // Draw heart
+        ctx.fillStyle = "#db2777";
+        ctx.beginPath();
+        ctx.moveTo(100, 50);
+        ctx.bezierCurveTo(100, 30, 50, 30, 50, 70);
+        ctx.bezierCurveTo(50, 120, 100, 150, 100, 150);
+        ctx.bezierCurveTo(100, 150, 150, 120, 150, 70);
+        ctx.bezierCurveTo(150, 30, 100, 30, 100, 50);
+        ctx.fill();
+
+        // Create confetti with heart shape
+        confetti({
+          particleCount: 50,
+          spread: 70,
+          origin: { y: 0.3 },
+          shapes: ["image"],
+          shapeOptions: {
+            image: {
+              src: heartCanvas.toDataURL(),
+              width: 20,
+              height: 20,
+            },
+          },
+        });
+      }
+
+      // Show daily message
+      function showDailyMessage() {
+        const dailyMessageDiv = document.getElementById("dailyMessage");
+        const dailyMessageText = document.getElementById("dailyMessageText");
+
+        const today = new Date().getDay(); // 0-6
+        const message = dailyMessages[today % dailyMessages.length];
+
+        dailyMessageText.textContent = message;
+        dailyMessageDiv.classList.remove("hidden");
+
+        // Hide after 10 seconds
+        setTimeout(() => {
+          dailyMessageDiv.classList.add("hidden");
+        }, 10000);
+      }
+
+      // Particles.js configuration
+      particlesJS("particles-js", {
+        particles: {
+          number: {
+            value: 100,
+            density: {
+              enable: true,
+              value_area: 800,
+            },
+          },
+          color: {
+            value: ["#C084FC", "#DB2777", "#F472B6"],
+          },
+          shape: {
+            type: "star",
+            stroke: {
+              width: 0,
+              color: "#000000",
+            },
+            polygon: {
+              nb_sides: 5,
+            },
+          },
+          opacity: {
+            value: 0.6,
+            random: true,
+            anim: {
+              enable: false,
+              speed: 1,
+              opacity_min: 0.1,
+              sync: false,
+            },
+          },
+          size: {
+            value: 5,
+            random: true,
+            anim: {
+              enable: false,
+              speed: 40,
+              size_min: 0.1,
+              sync: false,
+            },
+          },
+          line_linked: {
+            enable: true,
+            distance: 150,
+            color: "#FBCFE8",
+            opacity: 0.4,
+            width: 1,
+          },
+          move: {
+            enable: true,
+            speed: 3,
+            direction: "none",
+            random: false,
+            straight: false,
+            out_mode: "out",
+            bounce: false,
+            attract: {
+              enable: false,
+              rotateX: 600,
+              rotateY: 1200,
+            },
+          },
+        },
+        interactivity: {
+          detect_on: "canvas",
+          events: {
+            onhover: {
+              enable: true,
+              mode: "repulse",
+            },
+            onclick: {
+              enable: true,
+              mode: "push",
+            },
+            resize: true,
+          },
+          modes: {
+            grab: {
+              distance: 400,
+              line_linked: {
+                opacity: 1,
+              },
+            },
+            bubble: {
+              distance: 400,
+              size: 40,
+              duration: 2,
+              opacity: 8,
+              speed: 3,
+            },
+            repulse: {
+              distance: 200,
+              duration: 0.4,
+            },
+            push: {
+              particles_nb: 4,
+            },
+            remove: {
+              particles_nb: 2,
+            },
+          },
+        },
+        retina_detect: true,
       });
 
-      // Optional: gift button placeholder
-      document.getElementById("giftBtn").addEventListener("click", () => {
-        alert(
-          "Choose a sweet treat for Tina — idea: surprise brunch, flowers, or a cozy movie night."
-        );
+      // Check if this is a return visit
+      const isReturnVisit = localStorage.getItem("visitedBefore");
+
+      // On load effects
+      window.addEventListener("load", () => {
+        // Always show confetti on load
+        confetti({
+          particleCount: 150,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ["#C084FC", "#DB2777", "#F472B6"],
+        });
+
+        // If it's a return visit, show special message after a delay
+        if (isReturnVisit) {
+          setTimeout(() => {
+            showSpecialMessage();
+            showDailyMessage();
+          }, 3000);
+        } else {
+          // First visit - mark as visited
+          localStorage.setItem("visitedBefore", "true");
+          showDailyMessage();
+        }
       });
 
-      // Entrance stagger for slide animations
-      document.addEventListener("DOMContentLoaded", () => {
-        const lefts = document.querySelectorAll(".slide-left");
-        const rights = document.querySelectorAll(".slide-right");
-        lefts.forEach(
-          (el, i) => (el.style.animationDelay = 0.15 + i * 0.08 + "s")
-        );
-        rights.forEach(
-          (el, i) => (el.style.animationDelay = 0.15 + i * 0.08 + "s")
-        );
+      // Typewriter effect
+      const messageElement = document.getElementById("message");
+      const text = messageElement.innerText;
+      messageElement.innerText = "";
+      let i = 0;
+      function typeWriter() {
+        if (i < text.length) {
+          messageElement.innerText += text.charAt(i);
+          i++;
+          setTimeout(typeWriter, 100);
+        }
+      }
+      typeWriter();
+
+      // Audio player with autoplay
+      const audio = new Audio("audio/Unity.mp3");
+      audio.loop = true;
+      audio.play().catch((error) => {
+        console.log("Autoplay prevented:", error);
       });
+      const playButton = document.getElementById("playButton");
+      playButton.addEventListener("click", () => {
+        if (audio.paused) {
+          audio.play();
+          playButton.innerText = "Pause Unity ❤️";
+          // Additional confetti on play
+          confetti({
+            particleCount: 200,
+            spread: 100,
+            origin: { y: 0.5 },
+            colors: ["#C084FC", "#DB2777", "#F472B6", "#ffffff"],
+          });
+        } else {
+          audio.pause();
+          playButton.innerText = "Play Unity ❤️";
+        }
+      });
+
+      // Add floating icons
+      const body = document.body;
+      const numberOfIcons = 15;
+      const icons = ["💖", "✨", "⭐", "🌸", "💫", "❤️"];
+
+      for (let i = 0; i < numberOfIcons; i++) {
+        const element = document.createElement("div");
+        element.innerText = icons[Math.floor(Math.random() * icons.length)];
+        element.classList.add("floating-element");
+        element.style.left = `${Math.random() * 100}vw`;
+        element.style.top = `${Math.random() * 100}vh`;
+        element.style.fontSize = `${15 + Math.random() * 35}px`;
+        element.style.opacity = `${0.3 + Math.random() * 0.7}`;
+        element.style.animationDelay = `${Math.random() * 10}s`;
+        element.style.animationDuration = `${4 + Math.random() * 4}s`;
+        element.style.zIndex = 1;
+        body.appendChild(element);
+      }
+
+      // Add sweet floating words
+      const numberOfWords = 10;
+      const sweetWords = [
+        "Amazing 😍",
+        "Smile ✨",
+        "Chaos 😉",
+        "Love 💖",
+        "Forever 💫",
+        "Memories ⭐",
+        "Sweet 🌸",
+        "Darling ❤️",
+        "Joy 😊",
+        "Passion 🔥",
+      ];
+
+      for (let i = 0; i < numberOfWords; i++) {
+        const element = document.createElement("div");
+        element.innerText =
+          sweetWords[Math.floor(Math.random() * sweetWords.length)];
+        element.classList.add("floating-element", "floating-word");
+        element.style.left = `${Math.random() * 100}vw`;
+        element.style.top = `${Math.random() * 100}vh`;
+        element.style.fontSize = `${20 + Math.random() * 30}px`;
+        element.style.opacity = `${0.4 + Math.random() * 0.6}`;
+        element.style.animationDelay = `${Math.random() * 10}s`;
+        element.style.animationDuration = `${5 + Math.random() * 5}s`;
+        element.style.zIndex = 2;
+        body.appendChild(element);
+      }
+
+      // Enhanced name click effect
+      const nameElement = document.getElementById("nameElement");
+      nameElement.addEventListener("click", () => {
+        // Show memory photo
+        showMemoryPhoto();
+
+        // Heart explosion
+        heartConfetti();
+
+        // Additional confetti
+        confetti({
+          particleCount: 300,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: ["#C084FC", "#DB2777", "#F472B6"],
+        });
+        confetti({
+          particleCount: 300,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: ["#C084FC", "#DB2777", "#F472B6"],
+        });
+      });
+
+      // Touch anywhere for hearts
+      document.addEventListener(
+        "touchstart",
+        function (e) {
+          const touch = e.touches[0];
+          const x = touch.clientX / window.innerWidth;
+          const y = touch.clientY / window.innerHeight;
+
+          confetti({
+            particleCount: 30,
+            spread: 70,
+            origin: { x, y },
+            colors: ["#C084FC", "#DB2777", "#F472B6"],
+            shapes: ["heart"],
+          });
+        },
+        false
+      );
     </script>
   </body>
 </html>
