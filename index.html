@@ -99,83 +99,79 @@
           transform: scale(1);
         }
       }
-      /* New styles for special message */
-      .special-message {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) scale(0);
-        background: rgba(255, 255, 255, 0.9);
-        padding: 2rem;
-        border-radius: 1rem;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        z-index: 100;
-        max-width: 80%;
-        text-align: center;
-        color: #db2777;
-        font-weight: bold;
-        animation: popIn 0.5s forwards;
-      }
-      @keyframes popIn {
-        0% {
-          transform: translate(-50%, -50%) scale(0);
-        }
-        80% {
-          transform: translate(-50%, -50%) scale(1.1);
-        }
-        100% {
-          transform: translate(-50%, -50%) scale(1);
-        }
-      }
-      .memory-photo {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) scale(0);
-        max-width: 90%;
-        max-height: 80vh;
-        border-radius: 1rem;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        z-index: 100;
-        animation: popIn 0.5s forwards;
-        object-fit: contain;
-      }
-      .close-btn {
-        position: absolute;
-        top: -15px;
-        right: -15px;
-        background: #db2777;
-        color: white;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        cursor: pointer;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        z-index: 101;
-      }
-      .daily-message {
+      /* Chat message styles */
+      .chat-container {
         position: fixed;
         bottom: 20px;
         left: 0;
         right: 0;
-        background: rgba(219, 39, 119, 0.9);
-        color: white;
-        padding: 1rem;
-        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         z-index: 50;
-        animation: slideUp 1s forwards;
+        gap: 10px;
       }
-      @keyframes slideUp {
-        from {
-          transform: translateY(100%);
-        }
+      .chat-message {
+        max-width: 80%;
+        padding: 12px 20px;
+        border-radius: 25px;
+        color: white;
+        font-size: 1.2rem;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: messageAppear 0.5s forwards;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        position: relative;
+      }
+      .left-message {
+        align-self: flex-start;
+        background: rgba(219, 39, 119, 0.9);
+        margin-left: 15px;
+      }
+      .right-message {
+        align-self: flex-end;
+        background: rgba(75, 85, 99, 0.9);
+        margin-right: 15px;
+      }
+      @keyframes messageAppear {
         to {
+          opacity: 1;
           transform: translateY(0);
         }
+      }
+      .chat-message::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        width: 20px;
+        height: 20px;
+      }
+      .left-message::after {
+        left: -10px;
+        background: rgba(219, 39, 119, 0.9);
+        clip-path: polygon(0% 0%, 100% 100%, 0% 100%);
+      }
+      .right-message::after {
+        right: -10px;
+        background: rgba(75, 85, 99, 0.9);
+        clip-path: polygon(100% 0%, 0% 100%, 100% 100%);
+      }
+      /* Floating hearts animation */
+      @keyframes floatUp {
+        0% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-100vh) rotate(360deg);
+          opacity: 0;
+        }
+      }
+      .floating-heart {
+        position: absolute;
+        font-size: 24px;
+        animation: floatUp 4s linear forwards;
+        z-index: 10;
       }
     </style>
   </head>
@@ -208,10 +204,8 @@
       Pause Unity ❤️
     </button>
 
-    <!-- Daily message container -->
-    <div id="dailyMessage" class="daily-message hidden">
-      <p id="dailyMessageText" class="text-xl md:text-2xl"></p>
-    </div>
+    <!-- Chat container for daily messages -->
+    <div id="chatContainer" class="chat-container"></div>
 
     <script>
       // Array of special messages for Tina
@@ -220,129 +214,110 @@
         "Every day with you is a beautiful adventure I never want to end 🌸",
         "Your smile is my favorite thing in the whole universe 💖",
         "I fall in love with you more each time I see you ❤️",
-        "You're not just becoming my love, but you'll be my favorite everything someday💫",
-        "The way you smile makes my heart skip a beat every time 😍",
+        "You're not just my love, you're my favorite everything 💫",
+        "The way you laugh makes my heart skip a beat every time 😍",
         "I'd choose you in a hundred lifetimes, in a hundred worlds, in any version of reality 🔥",
       ];
 
       // Array of memory photos (add your actual image paths)
       const memoryPhotos = [
-        "images/Tina1.jpg",
+        "images/Tina.jpeg",
         "images/Tina2.jpg",
         "images/Tina3.jpg",
         "images/Tina4.jpg",
       ];
 
-      // Array of daily messages
+      // Array of daily messages in chat format
       const dailyMessages = [
-        "Today's reminder: You're absolutely amazing just as you are!",
-        "Daily Tina fact: You make the world a better place just by being in it.",
-        "Special note: Your kindness shines brighter than you realize.",
-        "Thought for today: You're capable of incredible things, my love.",
-        "Just because: You're my favorite person to share this life with.",
+        { text: "Good morning beautiful! 🌞", sender: "left" },
+        {
+          text: "Just wanted to remind you how amazing you are today!",
+          sender: "right",
+        },
+        {
+          text: "You make every day brighter just by being you ☀️",
+          sender: "left",
+        },
+        {
+          text: "Whatever today brings, I know you'll handle it with grace",
+          sender: "right",
+        },
+        {
+          text: "Sending you all my love and positive energy! 💖",
+          sender: "left",
+        },
       ];
 
-      // Function to show a special message
-      function showSpecialMessage() {
-        const randomMessage =
-          specialMessages[Math.floor(Math.random() * specialMessages.length)];
+      // Function to create floating hearts
+      function createFloatingHearts(count) {
+        const colors = ["#ff0000", "#ff69b4", "#ff1493", "#db2777", "#f472b6"];
+        const hearts = ["❤️", "💖", "💗", "💓", "💞", "💕"];
 
-        const messageDiv = document.createElement("div");
-        messageDiv.className = "special-message";
-        messageDiv.innerHTML = `
-          <div class="text-3xl md:text-4xl mb-4">For My Beautiful Tina 💖</div>
-          <div class="text-xl md:text-2xl">${randomMessage}</div>
-          <button class="mt-4 bg-pink-500 text-white px-4 py-2 rounded-full">Close</button>
-        `;
+        for (let i = 0; i < count; i++) {
+          const heart = document.createElement("div");
+          heart.className = "floating-heart";
+          heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+          heart.style.left = `${Math.random() * 100}vw`;
+          heart.style.bottom = "0";
+          heart.style.animationDelay = `${Math.random() * 2}s`;
+          heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+          heart.style.fontSize = `${20 + Math.random() * 30}px`;
 
-        document.body.appendChild(messageDiv);
+          document.body.appendChild(heart);
 
-        // Add confetti
-        heartConfetti();
+          // Remove heart after animation completes
+          setTimeout(() => {
+            heart.remove();
+          }, 4000);
+        }
+      }
 
-        // Close button functionality
-        messageDiv.querySelector("button").addEventListener("click", () => {
-          messageDiv.remove();
+      // Function to show daily messages in chat format
+      function showDailyMessages() {
+        const chatContainer = document.getElementById("chatContainer");
+        let delay = 500; // Initial delay
+
+        dailyMessages.forEach((msg, index) => {
+          setTimeout(() => {
+            const messageDiv = document.createElement("div");
+            messageDiv.className = `chat-message ${msg.sender}-message`;
+            messageDiv.textContent = msg.text;
+            messageDiv.style.animationDelay = `${delay}ms`;
+
+            // Add small emoji reactions to some messages
+            if (index % 2 === 0) {
+              const emojiSpan = document.createElement("span");
+              emojiSpan.className = "absolute -bottom-4 right-2 text-xl";
+              emojiSpan.innerHTML = ["❤️", "✨", "😊", "🌟", "💖"][
+                Math.floor(Math.random() * 5)
+              ];
+              messageDiv.appendChild(emojiSpan);
+            }
+
+            chatContainer.appendChild(messageDiv);
+
+            // Create floating hearts for every other message
+            if (index % 2 === 0) {
+              createFloatingHearts(3);
+            }
+
+            // Scroll to bottom of chat
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+          }, delay);
+
+          delay += 1500; // Increment delay for next message
         });
 
-        // Auto-close after 8 seconds
+        // Final effect after last message
         setTimeout(() => {
-          if (document.body.contains(messageDiv)) {
-            messageDiv.remove();
-          }
-        }, 8000);
-      }
-
-      // Function to show a memory photo
-      function showMemoryPhoto() {
-        if (memoryPhotos.length === 0) return;
-
-        const randomPhoto =
-          memoryPhotos[Math.floor(Math.random() * memoryPhotos.length)];
-
-        const photoDiv = document.createElement("div");
-        photoDiv.className = "memory-photo-container";
-        photoDiv.innerHTML = `
-          <img src="${randomPhoto}" class="memory-photo" alt="Special Memory">
-          <div class="close-btn">×</div>
-        `;
-
-        document.body.appendChild(photoDiv);
-
-        // Close button functionality
-        photoDiv.querySelector(".close-btn").addEventListener("click", () => {
-          photoDiv.remove();
-        });
-      }
-
-      // Heart-shaped confetti
-      function heartConfetti() {
-        const heartCanvas = document.createElement("canvas");
-        heartCanvas.width = 200;
-        heartCanvas.height = 200;
-        const ctx = heartCanvas.getContext("2d");
-
-        // Draw heart
-        ctx.fillStyle = "#db2777";
-        ctx.beginPath();
-        ctx.moveTo(100, 50);
-        ctx.bezierCurveTo(100, 30, 50, 30, 50, 70);
-        ctx.bezierCurveTo(50, 120, 100, 150, 100, 150);
-        ctx.bezierCurveTo(100, 150, 150, 120, 150, 70);
-        ctx.bezierCurveTo(150, 30, 100, 30, 100, 50);
-        ctx.fill();
-
-        // Create confetti with heart shape
-        confetti({
-          particleCount: 50,
-          spread: 70,
-          origin: { y: 0.3 },
-          shapes: ["image"],
-          shapeOptions: {
-            image: {
-              src: heartCanvas.toDataURL(),
-              width: 20,
-              height: 20,
-            },
-          },
-        });
-      }
-
-      // Show daily message
-      function showDailyMessage() {
-        const dailyMessageDiv = document.getElementById("dailyMessage");
-        const dailyMessageText = document.getElementById("dailyMessageText");
-
-        const today = new Date().getDay(); // 0-6
-        const message = dailyMessages[today % dailyMessages.length];
-
-        dailyMessageText.textContent = message;
-        dailyMessageDiv.classList.remove("hidden");
-
-        // Hide after 10 seconds
-        setTimeout(() => {
-          dailyMessageDiv.classList.add("hidden");
-        }, 10000);
+          createFloatingHearts(15);
+          confetti({
+            particleCount: 50,
+            spread: 70,
+            origin: { y: 0.8 },
+            colors: ["#C084FC", "#DB2777", "#F472B6"],
+          });
+        }, delay + 1000);
       }
 
       // Particles.js configuration
@@ -452,9 +427,6 @@
         retina_detect: true,
       });
 
-      // Check if this is a return visit
-      const isReturnVisit = localStorage.getItem("visitedBefore");
-
       // On load effects
       window.addEventListener("load", () => {
         // Always show confetti on load
@@ -465,17 +437,8 @@
           colors: ["#C084FC", "#DB2777", "#F472B6"],
         });
 
-        // If it's a return visit, show special message after a delay
-        if (isReturnVisit) {
-          setTimeout(() => {
-            showSpecialMessage();
-            showDailyMessage();
-          }, 3000);
-        } else {
-          // First visit - mark as visited
-          localStorage.setItem("visitedBefore", "true");
-          showDailyMessage();
-        }
+        // Show daily messages after a short delay
+        setTimeout(showDailyMessages, 2000);
       });
 
       // Typewriter effect
@@ -503,7 +466,6 @@
         if (audio.paused) {
           audio.play();
           playButton.innerText = "Pause Unity ❤️";
-          // Additional confetti on play
           confetti({
             particleCount: 200,
             spread: 100,
@@ -568,11 +530,8 @@
       // Enhanced name click effect
       const nameElement = document.getElementById("nameElement");
       nameElement.addEventListener("click", () => {
-        // Show memory photo
-        showMemoryPhoto();
-
         // Heart explosion
-        heartConfetti();
+        createFloatingHearts(20);
 
         // Additional confetti
         confetti({
